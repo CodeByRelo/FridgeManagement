@@ -1,0 +1,48 @@
+﻿@model IEnumerable<FridgeManagement.Models.Fridge>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Manage Fridges</h1>
+
+<p>
+    <a asp-action="Create">Add New Fridge</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SerialNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SerialNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FridgeID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FridgeID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.FridgeID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
