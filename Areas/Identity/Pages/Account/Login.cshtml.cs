@@ -132,6 +132,14 @@ namespace FridgeManagement.Areas.Identity.Pages.Account
                         {
                             returnUrl = Url.Content("~/Home/CustomerLiaison"); // Redirect customers to a specific page
                         }
+                        else if (user.UserRole == "Customer")
+                        {
+                            returnUrl = Url.Content("~/Home/CustomerDashboard"); // Redirect customers to a specific page
+                        }
+                        else if (user.UserRole == "FaultTechnician")
+                        {
+                            returnUrl = Url.Content("~/Home/FaultTechnicianDashboard"); // Redirect customers to a specific page
+                        }
                         else
                         {
                             returnUrl = Url.Content("~/Home/InventoryLiaison"); // Default user page
