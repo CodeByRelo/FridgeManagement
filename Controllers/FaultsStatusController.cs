@@ -10,22 +10,23 @@ using FridgeManagement.Models;
 
 namespace FridgeManagement.Controllers
 {
-    public class LocationsController : Controller
+    public class FaultsStatusController : Controller
     {
         private readonly AuthenticationContext _context;
-        //5555
-        public LocationsController(AuthenticationContext context)
+
+        public FaultsStatusController(AuthenticationContext context)
         {
             _context = context;
         }
 
-        // GET: Locations
+        // GET: FaultsStatus
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Locations.ToListAsync());
+            var authenticationContext = _context.Faults.Include(f => f.Fridge);
+            return View(await authenticationContext.ToListAsync());
         }
 
-        // GET: Locations/Details/5
+        // GET: FaultsStatus/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace FridgeManagement.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations
-                .FirstOrDefaultAsync(m => m.LocationID == id);
-            if (location == null)
+            var fault = await _context.Faults
+                .Include(f => f.Fridge)
+                .FirstOrDefaultAsync(m => m.FaultID == id);
+            if (fault == null)
             {
                 return NotFound();
             }
 
-            return View(location);
+            return View(fault);
         }
 
-        // GET: Locations/Create
+        // GET: FaultsStatus/Create
         public IActionResult Create()
         {
+            ViewData["FridgeID"] = new SelectList(_context.Fridges, "FridgeID", "Model");
             return View();
         }
 
-        // POST: Locations/Create
+        // POST: FaultsStatus/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationID,LocationName,Address")] Location location)
+        public async Task<IActionResult> Create([Bind("FaultID,FaultDescription,Status,FridgeID")] Fault fault)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(location);
+                _context.Add(fault);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(location);
+            ViewData["FridgeID"] = new SelectList(_context.Fridges, "FridgeID", "Model", fault.FridgeID);
+            return View(fault);
         }
 
-        // GET: Locations/Edit/5
+        // GET: FaultsStatus/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace FridgeManagement.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations.FindAsync(id);
-            if (location == null)
+            var fault = await _context.Faults.FindAsync(id);
+            if (fault == null)
             {
                 return NotFound();
             }
-            return View(location);
+            ViewData["FridgeID"] = new SelectList(_context.Fridges, "FridgeID", "Model", fault.FridgeID);
+            return View(fault);
         }
 
-        // POST: Locations/Edit/5
+        // POST: FaultsStatus/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocationID,LocationName,Address")] Location location)
+        public async Task<IActionResult> Edit(int id, [Bind("FaultID,FaultDescription,Status,FridgeID")] Fault fault)
         {
-            if (id != location.LocationID)
+            if (id != fault.FaultID)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace FridgeManagement.Controllers
             {
                 try
                 {
-                    _context.Update(location);
+                    _context.Update(fault);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocationExists(location.LocationID))
+                    if (!FaultExists(fault.FaultID))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace FridgeManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(location);
+            ViewData["FridgeID"] = new SelectList(_context.Fridges, "FridgeID", "Model", fault.FridgeID);
+            return View(fault);
         }
 
-        // GET: Locations/Delete/5
+        // GET: FaultsStatus/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +130,36 @@ namespace FridgeManagement.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations
-                .FirstOrDefaultAsync(m => m.LocationID == id);
-            if (location == null)
+            var fault = await _context.Faults
+                .Include(f => f.Fridge)
+                .FirstOrDefaultAsync(m => m.FaultID == id);
+            if (fault == null)
             {
                 return NotFound();
             }
 
-            return View(location);
+            return View(fault);
         }
 
-        // POST: Locations/Delete/5
+        // POST: FaultsStatus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var location = await _context.Locations.FindAsync(id);
-            if (location != null)
+            var fault = await _context.Faults.FindAsync(id);
+            if (fault != null)
             {
-                _context.Locations.Remove(location);
+                _context.Faults.Remove(fault);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LocationExists(int id)
+        //123
+        private bool FaultExists(int id)
         {
-            return _context.Locations.Any(e => e.LocationID == id);
+            return _context.Faults.Any(e => e.FaultID == id);
         }
     }
 }

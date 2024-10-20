@@ -10,22 +10,22 @@ using FridgeManagement.Models;
 
 namespace FridgeManagement.Controllers
 {
-    public class LocationsController : Controller
+    public class FridgeRequestController : Controller
     {
         private readonly AuthenticationContext _context;
-        //5555
-        public LocationsController(AuthenticationContext context)
+
+        public FridgeRequestController(AuthenticationContext context)
         {
             _context = context;
         }
 
-        // GET: Locations
+        // GET: FridgeRequest
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Locations.ToListAsync());
+            return View(await _context.Fridges.ToListAsync());
         }
 
-        // GET: Locations/Details/5
+        // GET: FridgeRequest/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace FridgeManagement.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations
-                .FirstOrDefaultAsync(m => m.LocationID == id);
-            if (location == null)
+            var fridge = await _context.Fridges
+                .FirstOrDefaultAsync(m => m.FridgeID == id);
+            if (fridge == null)
             {
                 return NotFound();
             }
 
-            return View(location);
+            return View(fridge);
         }
 
-        // GET: Locations/Create
+        // GET: FridgeRequest/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Locations/Create
+        // POST: FridgeRequest/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationID,LocationName,Address")] Location location)
+        public async Task<IActionResult> Create([Bind("FridgeID,Model,SerialNumber,Status")] Fridge fridge)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(location);
+                _context.Add(fridge);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(location);
+            return View(fridge);
         }
 
-        // GET: Locations/Edit/5
+        // GET: FridgeRequest/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace FridgeManagement.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations.FindAsync(id);
-            if (location == null)
+            var fridge = await _context.Fridges.FindAsync(id);
+            if (fridge == null)
             {
                 return NotFound();
             }
-            return View(location);
+            return View(fridge);
         }
 
-        // POST: Locations/Edit/5
+        // POST: FridgeRequest/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocationID,LocationName,Address")] Location location)
+        public async Task<IActionResult> Edit(int id, [Bind("FridgeID,Model,SerialNumber,Status")] Fridge fridge)
         {
-            if (id != location.LocationID)
+            if (id != fridge.FridgeID)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace FridgeManagement.Controllers
             {
                 try
                 {
-                    _context.Update(location);
+                    _context.Update(fridge);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocationExists(location.LocationID))
+                    if (!FridgeExists(fridge.FridgeID))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace FridgeManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(location);
+            return View(fridge);
         }
 
-        // GET: Locations/Delete/5
+        // GET: FridgeRequest/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace FridgeManagement.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations
-                .FirstOrDefaultAsync(m => m.LocationID == id);
-            if (location == null)
+            var fridge = await _context.Fridges
+                .FirstOrDefaultAsync(m => m.FridgeID == id);
+            if (fridge == null)
             {
                 return NotFound();
             }
 
-            return View(location);
+            return View(fridge);
         }
 
-        // POST: Locations/Delete/5
+        // POST: FridgeRequest/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var location = await _context.Locations.FindAsync(id);
-            if (location != null)
+            var fridge = await _context.Fridges.FindAsync(id);
+            if (fridge != null)
             {
-                _context.Locations.Remove(location);
+                _context.Fridges.Remove(fridge);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LocationExists(int id)
+        private bool FridgeExists(int id)
         {
-            return _context.Locations.Any(e => e.LocationID == id);
+            return _context.Fridges.Any(e => e.FridgeID == id);
         }
     }
 }
