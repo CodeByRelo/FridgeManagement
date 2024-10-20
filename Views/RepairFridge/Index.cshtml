@@ -1,0 +1,51 @@
+﻿@model IEnumerable<FridgeManagement.Models.FridgeAction>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActionDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fridge)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActionDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fridge.Model)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ActionID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ActionID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ActionID">Delete</a>
+            </td>
+            <td>
+                    @Html.ActionLink("Process", "Process", new { id = item.FridgeID }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<a href="/FridgeRepair/Create">Create New Repair Request</a>
