@@ -1,0 +1,28 @@
+﻿@model FridgeManagement.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Delete Customer";
+    Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+}
+
+<h1>Delete Customer</h1>
+
+<h4>Are you sure you want to delete this customer?</h4>
+<div>
+    <h5>Customer Information:</h5>
+    <p>Email: @Model.Email</p>
+    <p>First Name: @Model.FirstName</p>
+    <p>Last Name: @Model.LastName</p>
+    <p>User Role: @Model.UserRole</p>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
