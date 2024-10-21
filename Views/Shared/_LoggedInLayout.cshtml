@@ -123,12 +123,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="FridgeAllocations" asp-action="Index">
+                                <a class="nav-link" asp-area="" asp-controller="Faults" asp-action="Index">
                                     <i class="fas fa-clipboard-list"></i> View Fault Status
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Fridges" asp-action="Index">
+                                <a class="nav-link" asp-area="" asp-controller="FridgeRequests" asp-action="Index">
                                     <i class="fas fa-temperature-half"></i> Request Fridge
                                 </a>
                             </li>
@@ -138,7 +138,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Fridges" asp-action="Index">
+                                <a class="nav-link" asp-area="" asp-controller="ServiceCheckups" asp-action="Index">
                                     <i class="fas fa-temperature-half"></i> Maintenance Visits
                                 </a>
                             </li>
@@ -163,7 +163,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Fridges" asp-action="Index">
+                                <a class="nav-link" asp-area="" asp-controller="RepairFridges" asp-action="Index">
                                     <i class="fas fa-temperature-half"></i> Repair Fridge
                                 </a>
                             </li>
@@ -172,12 +172,30 @@
                                     <i class="fas fa-clipboard-list"></i> Update Fridge condition
                                 </a>
                             </li>
-                            
-
-
                         }
-                        
-
+                        else if (user != null && user.UserRole == "MaintenanceTechnician")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="RepairFridge" asp-action="Index">
+                                    <i class="fas fa-temperature-half"></i> Maintance Visits
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="ServiceHistories" asp-action="Index">
+                                    <i class="fas fa-clipboard-list"></i> Maintenance History
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Faults" asp-action="Index">
+                                    <i class="fas fa-temperature-half"></i> Create Faults
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="FridgeAllocations" asp-action="Index">
+                                    <i class="fas fa-clipboard-list"></i> Fridge Allocations
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </nav>

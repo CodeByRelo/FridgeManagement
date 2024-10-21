@@ -41,6 +41,12 @@
                             <select asp-for="Input.Role" class="form-select" aria-required="true">
                                 <option value="" disabled selected>Select a role</option>
                                 <option value="Customer">Customer</option>
+                                <option value="Supplier">Supplier</option>
+                                <option value="Administrator">Administrator</option>
+                                <option value="CustomerLiaison">Customer Liaison</option>
+                                <option value="InventoryLiaison">Inventory Liaison</option>
+                                <option value="FaultTechnician">Fault Technician</option>
+                                <option value="MaintenanceTechnician">Maintenance Technician</option>
                             </select>
                             <label asp-for="Input.Role">User Role</label>
                             <span asp-validation-for="Input.Role" class="text-danger"></span>
