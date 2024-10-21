@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FridgeManagement.Data;
 using FridgeManagement.Models;
+using FridgeManagement.Areas.Identity.Data; // Add this namespace for your Identity user
 
 namespace FridgeManagement.Controllers
 {
@@ -22,8 +23,11 @@ namespace FridgeManagement.Controllers
         // GET: FridgeAllocations
         public async Task<IActionResult> Index()
         {
-            var authenticationContext = _context.FridgeAllocations.Include(f => f.Customer).Include(f => f.Fridge);
-            return View(await authenticationContext.ToListAsync());
+            var fridgeAllocations = await _context.FridgeAllocations
+                .Include(f => f.Customer) // You may need to adjust this based on your FridgeAllocation model
+                .Include(f => f.Fridge)
+                .ToListAsync();
+            return View(fridgeAllocations);
         }
 
         // GET: FridgeAllocations/Details/5
@@ -35,7 +39,7 @@ namespace FridgeManagement.Controllers
             }
 
             var fridgeAllocation = await _context.FridgeAllocations
-                .Include(f => f.Customer)
+                .Include(f => f.Customer) // Adjust based on your FridgeAllocation model
                 .Include(f => f.Fridge)
                 .FirstOrDefaultAsync(m => m.AllocationID == id);
             if (fridgeAllocation == null)
@@ -47,36 +51,38 @@ namespace FridgeManagement.Controllers
         }
 
         // GET: FridgeAllocations/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "FirtsName");
+            // Fetch customers based on UserRole
+            var customers = await _context.Users
+                .Where(u => u.UserRole == "Customer") // Filter for customers
+                .ToListAsync();
+
+            ViewData["CustomerID"] = new SelectList(customers, "Id", "FirstName"); // Assuming FirstName is a property
             ViewData["FridgeID"] = new SelectList(_context.Fridges, "FridgeID", "Model");
             return View();
         }
 
         // POST: FridgeAllocations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AllocationID,AllocationDate,FridgeID,CustomerID")] FridgeAllocation fridgeAllocation)
         {
             if (ModelState.IsValid)
             {
-                // Add the new allocation to the database context
                 _context.Add(fridgeAllocation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index)); // Redirect to the Index action
+                return RedirectToAction(nameof(Index));
             }
 
-            // If model state is invalid, reload the necessary data for the dropdowns
-            ViewData["CustomerID"] = new SelectList(await _context.Customers.ToListAsync(), "CustomerID", "FirtsName", fridgeAllocation.CustomerID);
-            ViewData["FridgeID"] = new SelectList(await _context.Fridges.ToListAsync(), "FridgeID", "Model", fridgeAllocation.FridgeID);
-
-            // Return the view with the current model to show validation errors
+            // Reload necessary data for the dropdowns if model state is invalid
+            var customers = await _context.Users
+                .Where(u => u.UserRole == "Customer") // Filter for customers
+                .ToListAsync();
+            ViewData["CustomerID"] = new SelectList(customers, "Id", "FirstName", fridgeAllocation.CustomerID);
+            ViewData["FridgeID"] = new SelectList(_context.Fridges, "FridgeID", "Model", fridgeAllocation.FridgeID);
             return View(fridgeAllocation);
         }
-
 
         // GET: FridgeAllocations/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -91,14 +97,16 @@ namespace FridgeManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "FirtsName", fridgeAllocation.CustomerID);
+
+            var customers = await _context.Users
+                .Where(u => u.UserRole == "Customer") // Filter for customers
+                .ToListAsync();
+            ViewData["CustomerID"] = new SelectList(customers, "Id", "FirstName", fridgeAllocation.CustomerID);
             ViewData["FridgeID"] = new SelectList(_context.Fridges, "FridgeID", "Model", fridgeAllocation.FridgeID);
             return View(fridgeAllocation);
         }
 
         // POST: FridgeAllocations/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AllocationID,AllocationDate,FridgeID,CustomerID")] FridgeAllocation fridgeAllocation)
@@ -128,7 +136,12 @@ namespace FridgeManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "FirtsName", fridgeAllocation.CustomerID);
+
+            // Reload necessary data for the dropdowns if model state is invalid
+            var customers = await _context.Users
+                .Where(u => u.UserRole == "Customer") // Filter for customers
+                .ToListAsync();
+            ViewData["CustomerID"] = new SelectList(customers, "Id", "FirstName", fridgeAllocation.CustomerID);
             ViewData["FridgeID"] = new SelectList(_context.Fridges, "FridgeID", "Model", fridgeAllocation.FridgeID);
             return View(fridgeAllocation);
         }
@@ -142,7 +155,7 @@ namespace FridgeManagement.Controllers
             }
 
             var fridgeAllocation = await _context.FridgeAllocations
-                .Include(f => f.Customer)
+                .Include(f => f.Customer) // Adjust based on your FridgeAllocation model
                 .Include(f => f.Fridge)
                 .FirstOrDefaultAsync(m => m.AllocationID == id);
             if (fridgeAllocation == null)

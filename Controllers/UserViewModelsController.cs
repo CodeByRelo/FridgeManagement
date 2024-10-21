@@ -35,6 +35,14 @@ public class UserViewModelsController : Controller
     {
         if (ModelState.IsValid)
         {
+            // Check if the email already exists
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Email", "Email is already in use.");
+                return View(model);
+            }
+
             var user = new FridgeManagementUser
             {
                 UserName = model.Email,
@@ -58,6 +66,7 @@ public class UserViewModelsController : Controller
 
         return View(model);
     }
+
 
     // GET: Edit user view
     public async Task<IActionResult> Edit(string id)

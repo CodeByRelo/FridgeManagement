@@ -7,10 +7,6 @@
 
 <h1>Customers</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Customer</a>
-</p>
-
 <table class="table">
     <thead>
         <tr>
@@ -30,7 +26,6 @@
                 <td>@customer.LastName</td>
                 <td>@customer.UserRole</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@customer.Id" class="btn btn-secondary">Edit</a>
                     <a asp-action="Delete" asp-route-id="@customer.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>

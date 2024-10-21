@@ -69,8 +69,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Locations" asp-action="Index">
-                                    <i class="fas fa-map-marker-alt"></i> Manage Locations
+                                <a class="nav-link" asp-area="" asp-controller="Fridges" asp-action="Index">
+                                    <i class="fas fa-warehouse"></i> View Inventory
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -106,12 +106,45 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Fridges" asp-action="Index">
-                                    <i class="fas fa-temperature-half"></i> View Inventory
+                                    <i class="fas fa-warehouse"></i> View Inventory
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="FridgeAllocations" asp-action="Index">
                                     <i class="fas fa-clipboard-list"></i> Create Purchase Request
+                                </a>
+                            </li>
+                        }
+                        else if (user != null && user.UserRole == "Customer")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Fridges" asp-action="Index">
+                                    <i class="fas fa-temperature-half"></i> Create Fault
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="FridgeAllocations" asp-action="Index">
+                                    <i class="fas fa-clipboard-list"></i> View Fault Status
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Fridges" asp-action="Index">
+                                    <i class="fas fa-temperature-half"></i> Request Fridge
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="FridgeAllocations" asp-action="Index">
+                                    <i class="fas fa-clipboard-list"></i> View Request Status
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Fridges" asp-action="Index">
+                                    <i class="fas fa-temperature-half"></i> Maintenance Visits
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="FridgeAllocations" asp-action="Index">
+                                    <i class="fas fa-clipboard-list"></i> History
                                 </a>
                             </li>
                         }

@@ -5,44 +5,54 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">Fridge Allocations</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
+<p class="text-right">
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AllocationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fridge)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AllocationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fridge.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.FirtsName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AllocationID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AllocationID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AllocationID">Delete</a>
-            </td>
-        </tr>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().AllocationDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Fridge.Model)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Customer.FirtsName)
+                </th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AllocationDate.ToString("d")) <!-- Format date -->
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fridge.Model)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.FirtsName)
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@item.AllocationID" class="btn btn-warning btn-sm">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.AllocationID" class="btn btn-info btn-sm">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.AllocationID" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
-    </tbody>
-</table>
