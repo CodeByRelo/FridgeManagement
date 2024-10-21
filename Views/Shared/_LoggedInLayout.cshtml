@@ -147,7 +147,37 @@
                                     <i class="fas fa-clipboard-list"></i> History
                                 </a>
                             </li>
+                                   
+
                         }
+                        else if (user != null && user.UserRole == "FaultTechnician")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Fault" asp-action="Index">
+                                    <i class="fas fa-temperature-half"></i> View Faults
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Faults" asp-action="Index">
+                                    <i class="fas fa-clipboard-list"></i> Fault Process
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Fridges" asp-action="Index">
+                                    <i class="fas fa-temperature-half"></i> Repair Fridge
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="RepairFridge" asp-action="Index">
+                                    <i class="fas fa-clipboard-list"></i> Update Fridge condition
+                                </a>
+                            </li>
+                            
+
+
+                        }
+                        
+
                     </ul>
                 </div>
             </nav>
